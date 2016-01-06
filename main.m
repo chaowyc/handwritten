@@ -15,5 +15,18 @@ load data\semeion.data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [trainData, trainDataLabel, testData, testDataLabel] = ProcessData(semeion);
 
+%% 函数OneTemplatesTrain(trainData, trainDataLabel)学习每一个类别的代表模板
+%   函数用法
+%   OneTemplatesTrain(trainData, trainDataLabel)
+%   input:
+%       trainData: 训练数据集 规模m * d
+%       trainDataLabel: 训练数据集标签 规模m * 1
+%   output:
+%       templates:代表样本集 规模c * d
+%       templates:代表样本集标签 规模c * 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+[templates, templatesLabel] = OneTemplatesTrain(trainData, trainDataLabel);
+
+[preLabel] = myClassify(testData, templates, templatesLabel);
 
 
