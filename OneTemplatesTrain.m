@@ -7,8 +7,6 @@ function [templates, templatesLabel] = OneTemplatesTrain(trainData, trainDataLab
 % output:
 %   templates:代表样本集
 %   templatesLabel:代表样本集对应的类别标签
-% c 王永超 哈尔滨工业大学计算机科学与技术 2016
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [m, n] = size(trainData);
 labels = unique(trainDataLabel);

@@ -14,7 +14,6 @@ function [trainData, trainDataLabel, testData, testDataLabel] = ProcessData(data
 %   trainDataLabel:根据trainDataSize对dataSet划分之后的训练数据集所对应的标签
 %   testData:根据testDataSize对testSet划分之后的测试数据集
 %   testDataLabel:根据testDataSize对testSet划分之后的测试数据集所对应的标签
-%(c) 王永超 哈尔滨工业大学计算机科学与技术, 2016
 if nargin == 2
     trainDataSize = 100;
     testDataSize = 50;
@@ -32,9 +31,6 @@ else
 end
 
 [m, n] = size(img);
-
-%% 取出样本的像素点阵 前256维 取出样本的类标签 后10维
-
 
 %% 将标签转化为十进制数并由dec_T存储
 dec_T = zeros(m, 1);

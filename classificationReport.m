@@ -1,5 +1,4 @@
 function [precision, recall] = classificationReport(trueLabel, preLabel, classNum, testDataSize)
-
 %% 以测试样本集的个数和测试类别的个数构造分类结果矩阵 classMat
 m = size(trueLabel, 1);
 n = m ./ testDataSize;
@@ -23,10 +22,13 @@ end
 precision = zeros(classNum, 1);
 recall = zeros(classNum, 1);
 
+
 for i = 1 : classNum
     precision(i, 1) = classMat(i, i) ./ sum(classMat(:, i));
     recall(i, 1) = classMat(i, i) ./ sum(classMat(i, :));
 end
+meanPrecision = mean(precision);
+meanRecall = mean(recall);
 
 fprintf('分类的结果为：\n');
 fprintf('\t\tprecision \trecall\n');
@@ -34,3 +36,4 @@ for i = 1 : classNum
    fprintf('class %d', i);
    fprintf('\t %f \t %f\n', precision(i , 1), recall(i ,1));
 end
+fprintf('Average\t %f \t %f\n', meanPrecision, meanRecall);

@@ -10,7 +10,6 @@ function myNNClassify(semeion, labelForPca, labelForKNN, kNum)
 %   5. DataSet 为需要处理的数据集 optional 是可选的trainDataSize 和
 %   testDataSize，如果没有显示指定，trainDataSize=100 testDataSize=50
 %   函数最终返回处理之后的训练数据集和对应的类标签 以及 测试数据及和对应的标签
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [trainData, trainDataLabel, testData, testDataLabel] = ProcessData(semeion, labelForPca);
 
 
@@ -23,7 +22,6 @@ function myNNClassify(semeion, labelForPca, labelForKNN, kNum)
 %   output:
 %       templates:代表样本集 规模c * d
 %       templates:代表样本集标签 规模c * 1
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if strcmp(labelForKNN, 'false') == 1
     [templates, templatesLabel] = OneTemplatesTrain(trainData, trainDataLabel);
     [preLabel] = myClassify(testData, templates, templatesLabel, 1);

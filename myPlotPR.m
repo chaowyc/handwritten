@@ -1,4 +1,5 @@
 function [] = myPlotPR(precision, recall)
+% 画出precision以及recall的变化曲线
 
 m = size(precision, 2);
 figure
