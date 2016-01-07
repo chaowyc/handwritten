@@ -1,4 +1,6 @@
 %% 加载数据， 数据来源http://archive.ics.uci.edu/ml/
+clear;
+clc;
 load data\semeion.data
 
 %% 函数ProcessData(DataSet, optional)对数据集进行预处理 包括：
@@ -27,8 +29,19 @@ load data\semeion.data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [templates, templatesLabel] = OneTemplatesTrain(trainData, trainDataLabel);
 
-[preLabel] = myClassify(testData, templates, templatesLabel);
+%[preLabel] = myClassify(testData, templates, templatesLabel);
+kNum = 15;
+precision = zeros(10, kNum);
+recall = zeros(10, kNum);
+for i = 1 : kNum
+    [preLabel] = myClassify(testData, trainData, trainDataLabel, i);
+    [x, y] = classificationReport(testDataLabel, preLabel, 10, 50);
+    precision(:, i) = x;
+    recall(:, i) = y;
+end
 
-classificationReport(testDataLabel, preLabel, 10, 50);
+myPlotPR(precision, recall);
+
+
 
 

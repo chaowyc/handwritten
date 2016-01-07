@@ -1,4 +1,4 @@
-function classificationReport(trueLabel, preLabel, classNum, testDataSize)
+function [precision, recall] = classificationReport(trueLabel, preLabel, classNum, testDataSize)
 
 %% 以测试样本集的个数和测试类别的个数构造分类结果矩阵 classMat
 m = size(trueLabel, 1);

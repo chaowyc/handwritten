@@ -61,7 +61,6 @@ testData(1 : testDataSize, :) = precData(trainDataSize + 1 : trainDataSize + tes
 testDataLabel(1 : testDataSize, :) = precLabel(trainDataSize + 1 : trainDataSize + testDataSize, :);
 
 for i = 2 : c
-    i
     tmp = (i - 1) * trainDataSize + 1; 
     indexTmp = index(i - 1);
     trainData(tmp : i * trainDataSize, :) = precData(indexTmp + 1 : indexTmp + trainDataSize, :);
