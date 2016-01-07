@@ -1,4 +1,4 @@
-function [trainData, trainDataLabel, testData, testDataLabel] = ProcessData(dataSet, trainDataSize, testDataSize)
+function [trainData, trainDataLabel, testData, testDataLabel] = ProcessData(dataSet, label, trainDataSize, testDataSize)
 %函数功能描述：
 %对输入的数据集dataSet，根据trainDataSize和testDataSize划分为相应大小的训练数据集和测试数据集,并返回
 %TODO：实现交叉验证，函数实现参考scikit-learn的交叉验证模块实现：http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.train_test_split.html
@@ -15,17 +15,26 @@ function [trainData, trainDataLabel, testData, testDataLabel] = ProcessData(data
 %   testData:根据testDataSize对testSet划分之后的测试数据集
 %   testDataLabel:根据testDataSize对testSet划分之后的测试数据集所对应的标签
 %(c) 王永超 哈尔滨工业大学计算机科学与技术, 2016
-if nargin == 1
+if nargin == 2
     trainDataSize = 100;
     testDataSize = 50;
 end
 
-%% 加载数据， 数据来源http://archive.ics.uci.edu/ml/
-[m, n] = size(dataSet);
+if strcmp(label, 'true') == 1
+   [img, dd] = pca(dataSet(:, 1 : 256), 0.95);
+   dim = dd;
+   T = dataSet(:, 257:266);
+   fprintf('数据降维\n');
+else
+    img = dataSet(:, 1:256);
+    dim = size(img, 2);
+    T = dataSet(:, 257:266);
+end
+
+[m, n] = size(img);
 
 %% 取出样本的像素点阵 前256维 取出样本的类标签 后10维
-img = dataSet(:, 1:256);
-T = dataSet(:, 257:266);
+
 
 %% 将标签转化为十进制数并由dec_T存储
 dec_T = zeros(m, 1);
@@ -39,7 +48,7 @@ label = unique(dec_T);
 c = size(label, 1);
 index = zeros(c, 1);
 index(1, 1) = size(find(dec_T == label(1, 1)), 1);
-precData = zeros(m , 256);
+precData = zeros(m , dim);
 precData(1 : index(1, 1), :) = img(find(dec_T == label(1, 1)), :);
 precLabel(1 : index(1, 1), 1) = dec_T(find(dec_T == label(1, 1)), 1);
 for i = 2 : c
@@ -50,8 +59,8 @@ for i = 2 : c
 end
 
 %% 分割数据集，　每一类前trainDataSize条为训练数据　后testDataSize条数据为测试数据集
-trainData = zeros(c * trainDataSize, 256);
-testData = zeros(c * testDataSize, 256);
+trainData = zeros(c * trainDataSize, dim);
+testData = zeros(c * testDataSize, dim);
 trainDataLabel = zeros(c * trainDataSize, 1);
 testDataLabel = zeros(c * testDataSize, 1);
 
