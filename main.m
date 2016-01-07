@@ -29,4 +29,6 @@ load data\semeion.data
 
 [preLabel] = myClassify(testData, templates, templatesLabel);
 
+classificationReport(testDataLabel, preLabel, 10, 50);
+
 

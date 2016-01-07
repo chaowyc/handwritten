@@ -24,5 +24,3 @@ for i = 1 : c
     templatesLabel(i, 1) = i;
 end
 
-templates
-templatesLabel

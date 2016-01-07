@@ -39,9 +39,14 @@ label = unique(dec_T);
 c = size(label, 1);
 index = zeros(c, 1);
 index(1, 1) = size(find(dec_T == label(1, 1)), 1);
+precData = zeros(m , 256);
+precData(1 : index(1, 1), :) = img(find(dec_T == label(1, 1)), :);
+precLabel(1 : index(1, 1), 1) = dec_T(find(dec_T == label(1, 1)), 1);
 for i = 2 : c
     id = find(dec_T == label(i, 1));
     index(i, 1) = index(i - 1, 1) + size(id, 1);
+    precData(index(i - 1, 1) + 1 : index(i ,1), :) = img(id, :);
+    precLabel(index(i -1, 1) + 1 : index(i, 1), 1) = dec_T(id, 1);
 end
 
 %% 分割数据集，　每一类前trainDataSize条为训练数据　后testDataSize条数据为测试数据集
@@ -50,36 +55,36 @@ testData = zeros(c * testDataSize, 256);
 trainDataLabel = zeros(c * trainDataSize, 1);
 testDataLabel = zeros(c * testDataSize, 1);
 
-trainData(1 : trainDataSize, :) = img(1 : trainDataSize, :);
-trainDataLabel(1 : trainDataSize, 1) = dec_T(1 : trainDataSize, 1);
-testData(1 : testDataSize, :) = img(trainDataSize + 1 : trainDataSize + testDataSize, :);
-testDataLabel(1 : testDataSize, :) = dec_T(trainDataSize + 1 : trainDataSize + testDataSize, :);
+trainData(1 : trainDataSize, :) = precData(1 : trainDataSize, :);
+trainDataLabel(1 : trainDataSize, 1) = precLabel(1 : trainDataSize, 1);
+testData(1 : testDataSize, :) = precData(trainDataSize + 1 : trainDataSize + testDataSize, :);
+testDataLabel(1 : testDataSize, :) = precLabel(trainDataSize + 1 : trainDataSize + testDataSize, :);
 
 for i = 2 : c
     i
     tmp = (i - 1) * trainDataSize + 1; 
     indexTmp = index(i - 1);
-    trainData(tmp : i * trainDataSize, :) = img(indexTmp + 1 : indexTmp + trainDataSize, :);
-    trainDataLabel(tmp : i * trainDataSize, :) = dec_T(indexTmp + 1 : indexTmp + trainDataSize, :);
+    trainData(tmp : i * trainDataSize, :) = precData(indexTmp + 1 : indexTmp + trainDataSize, :);
+    trainDataLabel(tmp : i * trainDataSize, :) = precLabel(indexTmp + 1 : indexTmp + trainDataSize, :);
     tmp = (i - 1) * testDataSize + 1;
-    testData(tmp : i * testDataSize, :) = img(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :);
-    testDataLabel(tmp : i * testDataSize, :) = dec_T(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :);
+    testData(tmp : i * testDataSize, :) = precData(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :);
+    testDataLabel(tmp : i * testDataSize, :) = precLabel(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :);
 end
 %% 通过isequal(),测试数据集的分割正确与否。
-isequal(trainData(1:trainDataSize, :), img(1:trainDataSize, :))
-isequal(testData(1:testDataSize, :), img(trainDataSize + 1 : trainDataSize + testDataSize, :))
+isequal(trainData(1:trainDataSize, :), precData(1:trainDataSize, :));
+isequal(testData(1:testDataSize, :), precData(trainDataSize + 1 : trainDataSize + testDataSize, :));
 
-isequal(trainDataLabel(1:trainDataSize, :), dec_T(1:trainDataSize, :))
-isequal(testDataLabel(1:testDataSize, :), dec_T(trainDataSize + 1 : trainDataSize + testDataSize, :))
+isequal(trainDataLabel(1:trainDataSize, :), precLabel(1:trainDataSize, :));
+isequal(testDataLabel(1:testDataSize, :), precLabel(trainDataSize + 1 : trainDataSize + testDataSize, :));
 
 for i = 2 : c
     tmp = (i - 1) * trainDataSize + 1; 
     indexTmp = index(i - 1);
-    isequal(trainData(tmp : i * trainDataSize, :), img(indexTmp + 1 : indexTmp + trainDataSize, :))
-    isequal(trainDataLabel(tmp : i * trainDataSize, :), dec_T(indexTmp + 1 : indexTmp + trainDataSize, :))
+    isequal(trainData(tmp : i * trainDataSize, :), precData(indexTmp + 1 : indexTmp + trainDataSize, :));
+    isequal(trainDataLabel(tmp : i * trainDataSize, :), precLabel(indexTmp + 1 : indexTmp + trainDataSize, :));
     tmp = (i - 1) * testDataSize + 1;
-    isequal(testData(tmp : i * testDataSize, :), img(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :))
-    isequal(testDataLabel(tmp : i * testDataSize, :), dec_T(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :))
+    isequal(testData(tmp : i * testDataSize, :), precData(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :));
+    isequal(testDataLabel(tmp : i * testDataSize, :), precLabel(indexTmp + trainDataSize + 1 : indexTmp + trainDataSize + testDataSize, :));
 end
 
 
